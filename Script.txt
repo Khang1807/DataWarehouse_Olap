@@ -1,0 +1,96 @@
+-- Clean Data Lake
+if exists (select name from sys.Tables where name = 'Original_Data')
+	begin
+		DELETE FROM Original_Data;
+	end
+go
+
+if exists (select name from sys.Tables where name = 'Clean_Data')
+	begin
+		DELETE FROM Clean_Data;
+	end
+go
+
+if exists (select name from sys.Tables where name = 'Null_Data')
+	begin
+		DELETE FROM Null_Data;
+	end
+go
+
+--Original_Data
+CREATE TABLE [OLE DB Destination] (
+    [League] varchar(34),
+    [Season] varchar(11),
+    [Stage] varchar(14),
+    [Player] varchar(32),
+    [Team] varchar(5),
+    [GP] varchar(4),
+    [MIN] float,
+    [FGM] float,
+    [FGA] int,
+    [3PM] int,
+    [3PA] int,
+    [FTM] int,
+    [FTA] int,
+    [TOV] int,
+    [PF] int,
+    [ORB] int,
+    [DRB] int,
+    [REB] int,
+    [AST] int,
+    [STL] int,
+    [BLK] int,
+    [PTS] int,
+    [birth_year] float,
+    [birth_month] float,
+    [birth_date] int,
+    [height_cm] float,
+    [weight] float,
+    [weight_kg] float,
+    [nationality] varchar(48),
+    [high_school] varchar(63),
+    [draft_round] varchar(35),
+    [draft_pick] float,
+    [draft_team ] varchar(29)
+)
+--------------------------------------
+-- Conditional Split Null in Clean Data
+ISNULL([Season])||ISNULL([League])||ISNULL([Stage])||ISNULL([Player])||ISNULL([Team])||ISNULL([Birth_year])||ISNULL([Birth_date])||ISNULL([Height_cm])||ISNULL([Weight_kg])||ISNULL([Nationality])||ISNULL([High_school])||ISNULL([Draft_round])||ISNULL([Draft_pick])||ISNULL([Draft_team])||ISNULL([GP])||ISNULL([MIN])||ISNULL([FGM])||ISNULL([FGA])||ISNULL([3PM])||ISNULL([3PA])||ISNULL([FTM])||ISNULL([FTA])||ISNULL([TOV])||ISNULL([PF])||ISNULL([ORB])||ISNULL([DRB])||ISNULL([AST])||ISNULL([STL])||ISNULL([BLK])||ISNULL([PTS])
+
+-- Change Data Type in Original Data
+    [League] varchar(20),
+    [Season] varchar(15),
+    [Stage] varchar(30),
+    [Player] varchar(30),
+    [Team] varchar(20),
+    [GP] int,
+    [MIN] float,
+    [FGM] int,
+    [FGA] int,
+    [3PM] int,
+    [3PA] int,
+    [FTM] int,
+    [FTA] int,
+    [TOV] int,
+    [PF] int,
+    [ORB] int,
+    [DRB] int,
+    [REB] int,
+    [AST] int,
+    [STL] int,
+    [BLK] int,
+    [PTS] int,
+    [birth_year] int,
+    [birth_month] varchar(3),
+    [birth_date] varchar(7),
+    [height] varchar(6),
+    [height_cm] datetime,
+    [weight] int,
+    [weight_kg] int,
+    [nationality] int,
+    [high_school] varchar(100),
+    [draft_round] varchar(100),
+    [draft_pick] int,
+    [draft_team] int
+
+-- Change Data Type in 
