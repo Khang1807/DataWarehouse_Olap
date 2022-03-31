@@ -55,7 +55,7 @@ CREATE TABLE [OLE DB Destination] (
 )
 --------------------------------------
 -- Conditional Split Null in Clean Data
-ISNULL([Season])||ISNULL([League])||ISNULL([Stage])||ISNULL([Player])||ISNULL([Team])||ISNULL([Birth_year])||ISNULL([Birth_date])||ISNULL([Height_cm])||ISNULL([Weight_kg])||ISNULL([Nationality])||ISNULL([High_school])||ISNULL([Draft_round])||ISNULL([Draft_pick])||ISNULL([Draft_team])||ISNULL([GP])||ISNULL([MIN])||ISNULL([FGM])||ISNULL([FGA])||ISNULL([3PM])||ISNULL([3PA])||ISNULL([FTM])||ISNULL([FTA])||ISNULL([TOV])||ISNULL([PF])||ISNULL([ORB])||ISNULL([DRB])||ISNULL([AST])||ISNULL([STL])||ISNULL([BLK])||ISNULL([PTS])
+ISNULL([Season])||ISNULL([League])||ISNULL([Stage])||ISNULL([Player])||ISNULL([Team])||ISNULL([GP])||ISNULL([MIN])||ISNULL([FGM])||ISNULL([FGA])||ISNULL([3PM])||ISNULL([3PA])||ISNULL([FTM])||ISNULL([FTA])||ISNULL([TOV])||ISNULL([PF])||ISNULL([ORB])||ISNULL([DRB])||ISNULL([AST])||ISNULL([STL])||ISNULL([BLK])||ISNULL([PTS])||ISNULL([birth_year])||ISNULL([birth_month])||ISNULL([birth_date])||ISNULL([height_cm])||ISNULL([weight])||ISNULL([weight_kg])||ISNULL([nationality])||ISNULL([high_school])||ISNULL([draft_round])||ISNULL([draft_pick])
 
 -- Change Data Type in Original Data
     [League] varchar(20),
@@ -93,4 +93,29 @@ ISNULL([Season])||ISNULL([League])||ISNULL([Stage])||ISNULL([Player])||ISNULL([T
     [draft_pick] int,
     [draft_team] int
 
--- Change Data Type in 
+-- Set Foreign Keys
+if not exists (select name from sys.foreign_keys where name = 'FK_FACT_LEAGUE')
+	begin
+		ALTER TABLE Fact_Basketball
+		add constraint FK_FACT_LEAGUE
+		FOREIGN KEY(League_ID) references Dim_League(League_ID);
+	end
+go
+if not exists (select name from sys.foreign_keys where name = 'FK_FACT_SEASON')
+	begin
+		ALTER TABLE Fact_Basketball
+		add constraint FK_FACT_SEASON
+		FOREIGN KEY(Season_ID) references Dim_Season(Season_ID);
+	end
+go
+if not exists (select name from sys.foreign_keys where name = 'FK_FACT_PLAYER')
+	begin
+		ALTER TABLE Fact_Basketball
+		add constraint FK_FACT_PLAYER
+		FOREIGN KEY(Player_ID) references Dim_Player(Player_ID);
+	end
+go
+---- Errors
+[Fact_Basketball [2]] Error: SSIS Error Code DTS_E_OLEDBERROR.  An OLE DB error has occurred. Error code: 0x80004005.
+An OLE DB record is available.  Source: "Microsoft SQL Server Native Client 11.0"  Hresult: 0x80004005  Description: "The statement has been terminated.".
+An OLE DB record is available.  Source: "Microsoft SQL Server Native Client 11.0"  Hresult: 0x80004005  Description: "Cannot insert the value NULL into column 'Fact_Basketball_ID', table 'Basketball_DW.dbo.Fact_Basketball'; column does not allow nulls. INSERT fails.".
